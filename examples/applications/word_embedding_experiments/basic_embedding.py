@@ -27,9 +27,9 @@ model = SentenceTransformer('bert-base-nli-mean-tokens')
 
 #################################
 
-positive_sentences = ['He chases her.', 'The low interest rates caused the financial crisis.', 'The author blamed the cat.', 'The dog barks at him.', 'The crowd intimidates the bird.', 'Because it was late, Max walked Angela home.', 'The opportunity created a problem.', 'He chases her.']
-
-negative_sentences = ['She chases him.', 'The financial crisis caused the low interest rates.', 'The cat blamed the author.', 'He barks at the dog.', 'The bird intimidates the crowd.', 'Because it was late, Angela walked Max home.', 'A problem created the opportunity.', 'He runs after her.']
+# positive_sentences = ['He chases her.', 'The low interest rates caused the financial crisis.', 'The author blamed the cat.', 'The dog barks at him.', 'The crowd intimidates the bird.', 'Because it was late, Max walked Angela home.', 'The opportunity created a problem.', 'He chases her.']
+#
+# negative_sentences = ['She chases him.', 'The financial crisis caused the low interest rates.', 'The cat blamed the author.', 'He barks at the dog.', 'The bird intimidates the crowd.', 'Because it was late, Angela walked Max home.', 'A problem created the opportunity.', 'He runs after her.']
 
 #################################
 
@@ -40,17 +40,34 @@ import json
 # with open('passive_sentences.json') as json_file:
 #     negative_sentences = json.load(json_file)
 
-import json
-import codecs
+female_words = ["she", "her", "woman", "herself", "daughter", "mother", "gal", "girl", "female"]
+# male_words = ["he", "his", "man", "himself", "son", "father", "guy", "boy", "male"]
+male_words = ["it", "theirs", "bird", "itself", "driver", "heart", "tree", "cat", "bright"]
 
-with codecs.open('positive_sentences.json', 'r', 'utf-8-sig') as json_file:
-    positive_sentences = json.load(json_file)
-with codecs.open('negative_sentences.json', 'r', 'utf-8-sig') as json_file:
-    negative_sentences = json.load(json_file)
+female_embeddings = model.encode(female_words)
+male_embeddings = model.encode(male_words)
 
-positive_sentence_embeddings = model.encode(positive_sentences)
-negative_sentence_embeddings = model.encode(negative_sentences)
+list_diff = lambda list1, list2 : [item1-item2 for item1,item2 in zip(list1, list2)]
 
+differences = [list_diff(female_vec,male_vec) for female_vec, male_vec in zip(female_embeddings, male_embeddings)]
+
+print(differences)
+
+from sklearn.decomposition import PCA
+
+pca_analyser = PCA(n_components=5)
+pca_analyser.fit(differences)
+
+print((pca_analyser.explained_variance_,pca_analyser.explained_variance_ratio_))
+#(array([21.64773376,  9.18794535,  5.96829201,  3.2359274 ,  1.86589032]), array([0.48084541, 0.20408517, 0.13256934, 0.07187731, 0.04144567]))
+# for female/male
+
+# (array([42.36911934, 32.68025128, 23.63795388, 17.43316793, 15.96702281]), array([0.27483519, 0.21198654, 0.15333199, 0.11308349, 0.10357307]))
+# for female/random
+
+
+
+exit()
 import matplotlib
 import matplotlib.pyplot as plt
 
