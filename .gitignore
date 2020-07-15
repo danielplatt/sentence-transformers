@@ -6,3 +6,4 @@ sentence_transformers.egg-info
 dist/
 nr_*/
 /examples/training_transformers/output
+/venv/
