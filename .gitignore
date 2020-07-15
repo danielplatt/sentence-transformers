@@ -7,3 +7,4 @@ dist/
 nr_*/
 /examples/training_transformers/output
 /venv/
+/examples/applications/generate_svo_triples/49948_90823_bundle_archive/
