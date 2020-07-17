@@ -33,5 +33,5 @@ print(neg_sentences)
 print(passive_sentences)
 print(swapped_sentences)
 
-with open('svo_generated_sentences.txt', 'w') as outfile:
+with open('svo_generated_sentences.json', 'w') as outfile:
     json.dump({'pos_sentences': pos_sentences, 'neg_sentences': neg_sentences, 'passive_sentences': passive_sentences, 'swapped_sentences': swapped_sentences}, outfile)

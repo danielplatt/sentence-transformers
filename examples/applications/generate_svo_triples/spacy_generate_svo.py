@@ -19,7 +19,7 @@ print(len(json_files))
 #
 
 all_svo_triples = set()
-query_which_files = range(0,2000)
+query_which_files = range(0,20000)
 
 for file_number in query_which_files:
 
